@@ -26,13 +26,13 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ setNewTask, setNewDescripti
                 <div className="flex justify-end">
                     <button
                         onClick={addTodo}
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 mr-2"
+                        className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 mr-2"
                     >
                         Add
                     </button>
                     <button
                         onClick={closeModal}
-                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300"
+                        className="bg-gradient-to-r from-orange-500 to-red-500  text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors duration-300"
                     >
                         Cancel
                     </button>
