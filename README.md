@@ -1,13 +1,13 @@
 # Todo-List
 ## This todo-list consists of four features
 ### 1. View Todo List
-![view-todo-list](/frontend/src/assets/view-todo-list.png)
+![view-todo-list](/src/assets/view-todo-list.png)
 
 ### 2. Add Todo
-![add-todo](/frontend/src/assets/add-todo.png)
+![add-todo](/src/assets/add-todo.png)
 
 ### 3. Mark Todo As Completed
-![mark-todo](/frontend/src/assets/mark-todo.png)
+![mark-todo](/src/assets/mark-todo.png)
 
 ### 4. View Todo
-![add](/frontend/src/assets/view-todo.png)
+![add](/src/assets/view-todo.png)
