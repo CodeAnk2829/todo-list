@@ -1,16 +1,23 @@
-import { useState, useEffect } from 'react'
-import axios from "axios";
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import TodoList from './components/TodoList';
+import AddTaskModal from './components/AddTaskModal';
+import ViewTaskModal from './components/ViewTaskModal';
 
 interface Todo {
   id: number;
   task: string;
+  description: string;
   completed: boolean;
 }
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTask, setNewTask] = useState('');
+  const [newDescription, setNewDescription] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   useEffect(() => {
     fetchTodos();
@@ -22,11 +29,12 @@ function App() {
   };
 
   const addTodo = async () => {
-    if (!newTask.trim()) return;
-    console.log("this is new task: ", newTask);
-    const response = await axios.post('http://localhost:5000/todos', { task: newTask });
+    if (!newTask.trim() || !newDescription.trim()) return;
+    const response = await axios.post('http://localhost:5000/todos', { task: newTask, description: newDescription });
     setTodos([...todos, response.data]);
     setNewTask('');
+    setNewDescription('');
+    setIsAddModalOpen(false);
   };
 
   const toggleCompletion = async (id: number, completed: boolean) => {
@@ -39,54 +47,54 @@ function App() {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
+  const openAddModal = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const openViewModal = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setIsViewModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-center mb-6">Todo List</h1>
 
-        {/* Add New Todo */}
-        <div className="flex mb-4">
-          <input
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            placeholder="Add a new task..."
-            className="flex-1 p-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="flex justify-end mb-4">
           <button
-            onClick={addTodo}
-            className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition-colors duration-300"
+            onClick={openAddModal}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
           >
             Add Task
           </button>
         </div>
 
-        {/* Todo List */}
-        <ul className="space-y-4">
-          {todos.map((todo) => (
-            <li
-              key={todo.id}
-              className="flex items-center justify-between p-3 bg-gray-100 rounded-md shadow-md"
-            >
-              <div
-                className={`flex-1 cursor-pointer ${todo.completed ? 'line-through text-gray-400' : ''
-                  }`}
-                onClick={() => toggleCompletion(todo.id, todo.completed)}
-              >
-                {todo.task}
-              </div>
-              <button
-                onClick={() => deleteTodo(todo.id)}
-                className="text-red-500 hover:text-red-700 transition-colors duration-300"
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <TodoList
+          todos={todos}
+          openViewModal={openViewModal}
+          deleteTodo={deleteTodo}
+          toggleCompletion={toggleCompletion}
+        />
+
+        {isAddModalOpen && (
+          <AddTaskModal
+            setNewTask={setNewTask}
+            setNewDescription={setNewDescription}
+            addTodo={addTodo}
+            closeModal={() => setIsAddModalOpen(false)}
+          />
+        )}
+
+        {isViewModalOpen && selectedTodo && (
+          <ViewTaskModal
+            todo={selectedTodo}
+            closeModal={() => setIsViewModalOpen(false)}
+          />
+        )}
       </div>
     </div>
   );
-}
+};
 
-export default App
+export default App;
