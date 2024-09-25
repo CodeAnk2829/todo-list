@@ -11,13 +11,11 @@ This todo-list project can be run locally for testing and contribution purposes.
 
 3. You are using a supported node version (check `package.json`)
 
-4. You have your database connection url with you
-
-5. Clone the repository and install dependencies:
+4. Clone the repository and install dependencies:
 ``` 
 git clone https://github.com/CodeAnk2829/todo-list.git && cd todo-list && npm install 
 ```
-6. To start developing, run `npm run dev`
+5. To start developing, run `npm run dev`
 
 ## Resources
 ### 1. View Todo List
