@@ -4,6 +4,8 @@ import TodoList from './components/TodoList';
 import AddTaskModal from './components/AddTaskModal';
 import ViewTaskModal from './components/ViewTaskModal';
 
+const URL = import.meta.env.VITE_BACKEND_URL;
+
 interface Todo {
   id: number;
   task: string;
@@ -24,13 +26,13 @@ function App() {
   }, [todos]);
 
   const fetchTodos = async () => {
-    const response = await axios.get('http://localhost:5000/todos');
+    const response = await axios.get(`${URL}`);
     setTodos(response.data);
   };
 
   const addTodo = async () => {
     if (!newTask.trim() || !newDescription.trim()) return;
-    const response = await axios.post('http://localhost:5000/todos', { task: newTask, description: newDescription });
+    const response = await axios.post(`${URL}`, { task: newTask, description: newDescription });
     setTodos([...todos, response.data]);
     setNewTask('');
     setNewDescription('');
@@ -38,12 +40,12 @@ function App() {
   };
 
   const toggleCompletion = async (id: number, completed: boolean) => {
-    const response = await axios.put(`http://localhost:5000/todos/${id}`, { completed: !completed });
+    const response = await axios.put(`${URL}/${id}`, { completed: !completed });
     setTodos(todos.map(todo => todo.id === id ? response.data : todo));
   };
 
   const deleteTodo = async (id: number) => {
-    await axios.delete(`http://localhost:5000/todos/${id}`);
+    await axios.delete(`${URL}/${id}`);
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
